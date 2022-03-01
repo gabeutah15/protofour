@@ -13,7 +13,10 @@ public class IdleState : StateMachineBehaviour
         {
             charMove.isClimbing = false;
             charMove.animator.SetBool("IsClimbing", false);
+            charMove.audioSource.clip = charMove.walkClip;
+            charMove.audioSource.Stop();
         }
+
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

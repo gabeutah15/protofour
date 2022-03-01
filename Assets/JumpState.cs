@@ -15,7 +15,11 @@ public class JumpState : StateMachineBehaviour
         {
             charMove.isJumping = true;
             animator.SetBool("IsJumping", true);
+            charMove.audioSource.loop = false;
+            charMove.audioSource.clip = charMove.jumpClip;
+            charMove.audioSource.Play();
         }
+
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -31,6 +35,7 @@ public class JumpState : StateMachineBehaviour
         {
             charMove.isJumping = false;
             animator.SetBool("IsJumping", false);
+            charMove.audioSource.loop = true;
 
         }
     }

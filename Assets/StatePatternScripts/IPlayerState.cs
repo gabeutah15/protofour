@@ -10,8 +10,6 @@ namespace StatePattern
         public abstract IPlayerState HandleInput(Player player);
         public abstract void Update(Player player);
         public abstract void EnterState(Player player);
-       
-
     }
 
     public class StandingState : MonoBehaviour, IPlayerState

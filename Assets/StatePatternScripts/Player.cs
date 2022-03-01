@@ -17,7 +17,6 @@ public class Player : MonoBehaviour
     public static readonly int Attack = Animator.StringToHash("Attack");
     public static readonly int Walk = Animator.StringToHash("Walk");
 
-
     private void Start()
     {
         animator = GetComponent<Animator>();

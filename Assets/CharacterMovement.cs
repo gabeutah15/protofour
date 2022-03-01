@@ -17,11 +17,24 @@ public class CharacterMovement : MonoBehaviour
     public bool isSoaring { get; set; }
     public float JumpHeight = 1f;
 
+    public AudioSource audioSource;
+    public AudioClip walkClip;
+    public AudioClip runClip;
+    public AudioClip jumpClip;
+    public AudioClip climbClip;
+    public AudioClip soarClip;
+
+
 
     private void Start()
     {
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
+        audioSource.clip = jumpClip;
+        audioSource.Play();
     }
+
+    bool alreadyRunning = true;
 
     void Update()
     {
@@ -61,12 +74,51 @@ public class CharacterMovement : MonoBehaviour
             {
                 animator.SetBool("IsWalking", true);
                 transform.Rotate(0, rotation, 0);
+
+                if(currentSpeed > 8)
+                {
+                    if(!alreadyRunning)
+                    {
+                        audioSource.clip = runClip;
+                        audioSource.Play();
+                        alreadyRunning = true;
+                    }
+                }
+                else
+                {
+                    if(alreadyRunning)
+                    {
+                        audioSource.clip = walkClip;
+                        audioSource.Play();
+                        alreadyRunning = false;
+                    }
+                }
             }
             else
             {
                 animator.SetBool("IsWalking", false);
+                audioSource.Stop();
                 if(currentSpeed > 0)
                 {
+                    if(currentSpeed > 8)
+                    {
+                        if(!alreadyRunning)
+                        {
+                            audioSource.clip = runClip;
+                            audioSource.Play();
+                            alreadyRunning = true;
+                        }
+                    }
+                    else
+                    {
+                        if(alreadyRunning)
+                        {
+                            audioSource.clip = walkClip;
+                            audioSource.Play();
+                            alreadyRunning = false;
+                        }
+
+                    }
                     currentSpeed -= Time.deltaTime * speed; 
                 }
                 else
@@ -78,6 +130,7 @@ public class CharacterMovement : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space) && currentSpeed >= 0 && !isJumping)
             {
                 animator.SetTrigger("Jumped");
+                //audioSource.PlayOneShot(jumpClip);
             }
         }
         else if (isClimbing)
@@ -85,10 +138,19 @@ public class CharacterMovement : MonoBehaviour
             currentSpeed = 0;
             animator.SetFloat("Translation", Input.GetAxis("Vertical"));
 
+            //audioSource.PlayOneShot(runClip);
+            //audioSource.clip = climbClip;
+            //audioSource.Play();
+
+
             if(Input.GetKeyDown(KeyCode.Space))
             {
                 animator.SetTrigger("Jumped");
             }
+        }
+        else if(isSoaring)
+        {
+
         }
     }
 
